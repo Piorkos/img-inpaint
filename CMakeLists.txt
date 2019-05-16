@@ -4,16 +4,15 @@ project(img_inpaint)
 set(CMAKE_CXX_STANDARD 17)
 SET(OpenCV_DIR /drive/projects/cpp/installation/OpenCV-master/lib/cmake/opencv4)
 
-find_package( OpenCV REQUIRED )
+set(SOURCE_FILES main.cpp)
 
-include_directories( ${OpenCV_INCLUDE_DIRS})
+find_package(OpenCV REQUIRED)
+include_directories(${OpenCV_INCLUDE_DIRS})
 
-MACRO(add_example name)
-    ADD_EXECUTABLE(${name} ${name}.cpp)
-    TARGET_LINK_LIBRARIES(${name} ${OpenCV_LIBS} )
-ENDMACRO()
+add_executable(img_inpaint ${SOURCE_FILES})
 
-add_example(main)
+target_link_libraries(img_inpaint ${OpenCV_LIBRARIES})
+
 
 #add_executable(img_inpaint main.cpp)
 
