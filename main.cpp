@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #include "opencv2/opencv.hpp"
 #include "opencv2/imgcodecs.hpp"
@@ -9,7 +10,8 @@
 using namespace cv;
 
 // Declare Mat objects for original image and mask for inpainting
-Mat img, inpaintMask;
+Mat img;
+Mat inpaintMask;
 // Mat object for result output
 Mat res;
 Point prevPt(-1,-1);
@@ -31,37 +33,40 @@ static void onMouse( int event, int x, int y, int flags, void* )
         line( img, prevPt, pt, Scalar::all(255), 5, 8, 0 );
         prevPt = pt;
         imshow("image", img);
-        imshow("image: mask", inpaintMask);
+//        imshow("image: mask", inpaintMask);
     }
 }
 
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
     using std::cout;
+    using std::cin;
     using std::endl;
+    using std::cerr;
 
-    cout << "OpenCV version : " << CV_VERSION << endl;
-    cout << "Major version : " << CV_MAJOR_VERSION << endl;
-    cout << "Minor version : " << CV_MINOR_VERSION << endl;
-    cout << "Subminor version : " << CV_SUBMINOR_VERSION << endl;
+    cout << "OpenCV version : " << CV_VERSION << "\n";
+    cout << "Major version : " << CV_MAJOR_VERSION << "\n";
+    cout << "Minor version : " << CV_MINOR_VERSION << "\n";
+    cout << "Subminor version : " << CV_SUBMINOR_VERSION << "\n";
 
 
-    cout << "Usage: ./inpaint <image_path>" << endl;
-    cout << "Keys: " << endl;
-    cout << "t - inpaint using FMM" << endl;
-    cout << "n - inpaint using NS technique" << endl;
-    cout << "r - reset the inpainting mask" << endl;
-    cout << "ESC - exit" << endl;
+    cout << "Usage: ./inpaint <image_path>" << "\n";
+    cout << "Keys: " << "\n";
+    cout << "t - inpaint using FMM" << "\n";
+    cout << "n - inpaint using NS technique" << "\n";
+    cout << "r - reset the inpainting mask" << "\n";
+    cout << "ESC - exit" << "\n";
 
     std::string filename;
     if(argc > 1)
         filename = argv[1];
     else
-        filename = "sample.jpeg";
+        filename = "hotel_bristol.jpg";
 
     // Read image in color mode
     img = imread(filename, IMREAD_COLOR);
-    Mat img_mask;
+
     // Return error if image not read properly
     if(img.empty())
     {
@@ -72,6 +77,7 @@ int main(int argc, char** argv) {
     namedWindow("image", WINDOW_AUTOSIZE);
 
     // Create a copy for the original image
+    Mat img_mask;
     img_mask = img.clone();
     // Initialize mask (black image)
     inpaintMask = Mat::zeros(img_mask.size(), CV_8U);
